@@ -1,0 +1,19 @@
+{
+  "name": "pobl-error-cap",
+  "version": "1.0.0",
+  "description": "A package that connects to Pobl error capture application, desgined for Javascript-based applications",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TerryChengPobl/pobl-error-cap.git"
+  },
+  "author": "Pobl Web Dev Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TerryChengPobl/pobl-error-cap/issues"
+  },
+  "homepage": "https://github.com/TerryChengPobl/pobl-error-cap#readme"
+}
