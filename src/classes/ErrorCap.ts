@@ -1,3 +1,11 @@
+import axios from "axios";
+
+type ErrorObject = {
+  friendlyMessage: string;
+  errorMessage: string;
+  stackTrace: any;
+};
+
 export class ErrorCap {
   private static instance: ErrorCap;
   private connectionString: string;
@@ -14,20 +22,34 @@ export class ErrorCap {
 
   public async init(
     projectName: string,
-    connectUrl: string = "http://localhost:3000"
+    connectUrl: string = "http://localhost:3000/api"
   ): Promise<boolean> {
-    if (projectName === "" || connectUrl === "")
+    if (
+      projectName === "" ||
+      connectUrl === "" ||
+      typeof projectName !== "string" ||
+      typeof connectUrl !== "string"
+    )
       throw new Error("Invalid project name or connection string");
+
     this.projectName = projectName;
     this.connectionString = connectUrl;
     console.log("ErrorCap Initialised");
     return true;
   }
 
-  public async sendError(err: Error, code: number = 500) {
-    console.log(
-      `Error will be sent to ${this.connectionString} with project name ${this.projectName}`
-    );
-    console.log("Error sent with message: ", err.message, " and code: ", code);
+  public async sendError(err: ErrorObject) {
+    const newError = {
+      // errorCode: code,
+      friendlyMessage: err.friendlyMessage,
+      errorMessage: err.errorMessage,
+      stackTrace: err.stackTrace,
+      project: this.projectName,
+    };
+    try {
+      await axios.post(`${this.connectionString}/errors`, newError);
+    } catch (error) {
+      console.error(`Error sending error: ${error}`);
+    }
   }
 }
