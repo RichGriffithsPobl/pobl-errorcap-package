@@ -1,10 +1,9 @@
 {
   "name": "pobl-errorcap-package",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A package that connects to Pobl error capture application, desgined for Javascript-based applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "files": [
     "dist",
     "LICENSE",
@@ -13,8 +12,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "rm -rf dist && tsc",
-    "up": "yarn build && npm publish"
+    "build": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",
