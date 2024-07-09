@@ -9,10 +9,14 @@ type ErrorObject = {
 export class ErrorCap {
   private static instance: ErrorCap;
   private connectionString: string;
-  private projectName: string;
+  private application: string;
   private token: string;
 
-  constructor() {}
+  constructor() {
+    this.connectionString = 'http://localhost:3000/api';
+    this.application = '';
+    this.token = '';
+  }
 
   public static getInstance(): ErrorCap {
     if (!ErrorCap.instance) {
@@ -21,32 +25,26 @@ export class ErrorCap {
     return ErrorCap.instance;
   }
 
-  public async init(
-    projectName: string,
-    user: { username: string; password: string },
-    connectUrl: string = "http://localhost:3000/api"
-  ) {
-    if (
-      projectName === "" ||
-      connectUrl === "" ||
-      typeof projectName !== "string" ||
-      typeof connectUrl !== "string"
-    )
-      throw new Error("Invalid input");
+  public async init(projectName: string, user: { username: string; password: string }) {
+    if (projectName === '' || typeof projectName !== "string") throw new Error("Invalid input");
 
-    this.connectionString = connectUrl;
-    this.projectName = projectName;
-    // const token = await this.login(user.username, user.password);
-    // console.log(token);
-    this.token = "1234567";
+    // Set Application Name
+    this.application = projectName;
 
-    // console.log("token", this.token);
-    // if (user.username !== "apps" || user.password !== "password")
-    //   throw new Error("Invalid credentials");
+    // Attempt to login with user creds to return token
+    this.token = this.authenticate(user.username, user.password);
 
-    // this.token = "1234567";
-    console.log(user);
+    console.log('User', user)
+    console.log('Token', this.token)
     console.log("ErrorCap Initialised");
+  }
+
+  authenticate(username: string, password: string) {
+    if (username && password) {
+        return '0123456789';
+    } else {
+        throw new Error('Invalid credentials');
+    }
   }
 
   public async sendError(err: ErrorObject) {
@@ -58,7 +56,7 @@ export class ErrorCap {
       friendlyMessage: err.friendlyMessage,
       errorMessage: err.errorMessage,
       stackTrace: err.stackTrace,
-      application: this.projectName,
+      application: this.application,
     };
 
     try {
@@ -86,4 +84,6 @@ export class ErrorCap {
   //     throw new Error("Invalid credentials");
   //   }
   // }
+
+  
 }
